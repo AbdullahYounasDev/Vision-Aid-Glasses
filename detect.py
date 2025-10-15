@@ -43,6 +43,10 @@ if str(ROOT) not in sys.path:
     sys.path.append(str(ROOT))  # add ROOT to PATH
 ROOT = Path(os.path.relpath(ROOT, Path.cwd()))  # relative
 
+import queue
+import threading
+
+import pyttsx3
 from ultralytics.utils.plotting import Annotator, colors, save_one_box
 
 from models.common import DetectMultiBackend
@@ -65,19 +69,15 @@ from utils.general import (
 )
 from utils.torch_utils import select_device, smart_inference_mode
 
-import time
-import pyttsx3
-import threading
-import queue
-
 # ---------------- SPEECH SETUP ---------------- #
 engine = pyttsx3.init()
-engine.setProperty('rate', 150)
+engine.setProperty("rate", 150)
 speech_queue = queue.Queue()
 
 # Keep track of last spoken objects and time
 last_spoken = {}
 COOLDOWN = 3  # seconds between speaking the same object again
+
 
 def speech_loop():
     while True:
@@ -91,12 +91,13 @@ def speech_loop():
             print("Speech error:", e)
     engine.stop()
 
+
 threading.Thread(target=speech_loop, daemon=True).start()
 
-def speak_async(text):
-    """Safely queue text for speaking"""
-    speech_queue.put(text)
 
+def speak_async(text):
+    """Safely queue text for speaking."""
+    speech_queue.put(text)
 
 
 @smart_inference_mode()
@@ -183,7 +184,6 @@ def run(
     """
     source = str(source)
 
-
     save_img = not nosave and not source.endswith(".txt")  # save inference images
     is_file = Path(source).suffix[1:] in (IMG_FORMATS + VID_FORMATS)
     is_url = source.lower().startswith(("rtsp://", "rtmp://", "http://", "https://"))
@@ -218,7 +218,6 @@ def run(
     model.warmup(imgsz=(1 if pt or model.triton else bs, 3, *imgsz))  # warmup
     seen, windows, dt = 0, [], (Profile(device=device), Profile(device=device), Profile(device=device))
 
-
     for path, im, im0s, vid_cap, s in dataset:
         with dt[0]:
             im = torch.from_numpy(im).to(model.device)
@@ -245,7 +244,6 @@ def run(
         # NMS
         with dt[2]:
             pred = non_max_suppression(pred, conf_thres, iou_thres, classes, agnostic_nms, max_det=max_det)
-            
 
             # ------------------ SPEAK NEW OBJECTS ------------------
             names = model.names
@@ -261,8 +259,7 @@ def run(
                             print(f"🔊 {obj_name} detected ({conf:.2f})")
                             speak_async(f"{obj_name} detected")
 
-
-            # ------------------------------------------------------- 
+            # -------------------------------------------------------
 
         # Second-stage classifier (optional)
         # pred = utils.general.apply_classifier(pred, classifier_model, im, im0s)
