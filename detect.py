@@ -65,37 +65,6 @@ from utils.general import (
 )
 from utils.torch_utils import select_device, smart_inference_mode
 
-import time
-import pyttsx3
-import threading
-import queue
-
-# ---------------- SPEECH SETUP ---------------- #
-engine = pyttsx3.init()
-engine.setProperty('rate', 150)
-speech_queue = queue.Queue()
-
-# Keep track of last spoken objects and time
-last_spoken = {}
-COOLDOWN = 3  # seconds between speaking the same object again
-
-def speech_loop():
-    while True:
-        text = speech_queue.get()
-        if text is None:
-            break
-        try:
-            engine.say(text)
-            engine.runAndWait()
-        except Exception as e:
-            print("Speech error:", e)
-    engine.stop()
-
-threading.Thread(target=speech_loop, daemon=True).start()
-
-def speak_async(text):
-    """Safely queue text for speaking"""
-    speech_queue.put(text)
 
 
 
@@ -248,18 +217,6 @@ def run(
             
 
             # ------------------ SPEAK NEW OBJECTS ------------------
-            names = model.names
-
-            for det_frame in pred:
-                if det_frame is not None and len(det_frame):
-                    for c in det_frame[:, -1].tolist():
-                        obj_name = names[int(c)]
-                        conf_idx = (det_frame[:, -1] == c).nonzero()[0]
-                        conf = float(det_frame[conf_idx, -2][0]) if len(conf_idx) else 0.0
-
-                        if conf > 0.4:
-                            print(f"🔊 {obj_name} detected ({conf:.2f})")
-                            speak_async(f"{obj_name} detected")
 
 
             # ------------------------------------------------------- 
