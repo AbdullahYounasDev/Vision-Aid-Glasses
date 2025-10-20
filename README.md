@@ -1,8 +1,9 @@
 <div style="background-color:#f5f5f5; padding:20px; border-radius:10px;">
 
-<h2 style="color:#1f4e79;">YOLOv5 Minimal Detection with eSpeak NG</h2>
+<h2 style="color:#1f4e79;">AI Vision Aid Glasses for the Visually Impaired</h2>
 
-<p>This project uses YOLOv5 for object detection and eSpeak NG for voice notifications. Follow the guide below to set it up on Windows.</p>
+<p>This project helps blind people navigate their surroundings using AI. It features real-time object detection, voice feedback, live navigation, and distance monitoring to assist users in identifying objects and obstacles through spoken notifications.</p>
+
 
 </div>
 
@@ -13,7 +14,7 @@
 <h3 style="color:#1f4e79;">1️⃣ Clone or Pull the Repository</h3>
 
 <p><strong>Clone for the first time:</strong></p>
-<pre style="background-color:#dbe9f4; padding:10px; border-radius:5px;"><code>git clone https://github.com/your-username/your-repo-name.git</code></pre>
+<pre style="background-color:#dbe9f4; padding:10px; border-radius:5px;"><code>https://github.com/AbdullahYounasDev/Vision-Aid-Glasses.git</code></pre>
 
 <p><strong>Pull latest changes if you already have the repo:</strong></p>
 <pre style="background-color:#dbe9f4; padding:10px; border-radius:5px;"><code>cd your-repo-name
